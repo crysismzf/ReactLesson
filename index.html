@@ -41,6 +41,9 @@
 			margin: 10px 0 0 0;
 			display: block;
 		}
+		.test-input {
+			margin: 0 5px 5px 0;
+		}
 	</style>
 </head>
 <body>
@@ -74,6 +77,7 @@
 			return (
 					<React.Fragment>
 						<h3>Новости</h3>
+						<TestInput/>
 						{/*добавили свойство data*/}
 						<News data={myNews}/>
 						<Comments/>
@@ -81,7 +85,34 @@
 			)
 		};
 
+		class TestInput extends React.Component {
+			state = {
+				value: "Введите значение"
+			};
+			handInputGhange = (e) => {
+				this.setState({value: e.currentTarget.value})
+			}
+			handlerClickButton = (e) => {
+				alert(this.state.value);
+			}
+ 			render() {
+				return (
+						<React.Fragment>
+							<input onChange= {this.handInputGhange}  className="test-input" value={this.state.value} />
+							<button onClick= {this.handlerClickButton}>Клац</button>
+						</React.Fragment>
+				)
+			}
+		}
+
 		class News extends React.Component {
+			state = {
+				counter: 0
+			};
+			handAllNewsClick =(e) => {
+				// e.preventDefault()
+				this.setState({counter: ++this.state.counter})
+			}
 			renderNews = () => {
 				const {data} = this.props;
 				let newsTemplate;
@@ -101,8 +132,9 @@
 						<div className="news">
 							{this.renderNews()}
 							{
-								data.length ? <strong className={'news_count'}>Всего новостей: {data.length}</strong>:null
+								data.length ? <strong onClick={this.handAllNewsClick} className={'news_count'}>Всего новостей: {data.length}</strong>:null
 							}
+							<p>Кол-во кликов: {this.state.counter}</p>
 						</div>
 				)
 			}
